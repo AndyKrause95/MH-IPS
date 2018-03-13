@@ -7,7 +7,7 @@ namespace LogHandler;
  * @author Andy
  *        
  */
-class ErrorHandler {
+class LogHandler {
 	private $logFilePointer;
 	private $logFilePath = "/log/";
 	private $logFileName = "MH_LOG.log";
