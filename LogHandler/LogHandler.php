@@ -10,6 +10,7 @@ namespace LogHandler;
 class LogHandler {
 	private $logFilePath = "/log/";
 	private $logFileName = "MH_LOG.log";
+	private $maxSize = 0; /* TODO: Implement max size for log file */
 	
 	/**
 	 */
@@ -35,7 +36,7 @@ class LogHandler {
 	 * @return string
 	 */
 	public function generateStringFromParameters($timestamp, $type, $message, $file, $line) {
-		$timeFormatted = gmdate ( "Y-m-d H:i:s e", $timestamp );
+		$timeFormatted = gmdate ( "Y-m-d H:i:s T", $timestamp );
 		return $timeFormatted . "\t-\t" . $type . "\t-\t" . $message . "\t-\t" . "in file '" . $file . "' on line '" . $line . "'.\n";
 	}
 	
@@ -59,7 +60,7 @@ class LogHandler {
 	 */
 	public function getLogAsArray() {
 		$json = file_get_contents ( $this->getLogFile () );
-		return json_decode ( $json );
+		return json_decode ( $json, true );
 	}
 	
 	/**
@@ -68,7 +69,7 @@ class LogHandler {
 	 * @return string
 	 */
 	private function generateStringFromJson($jsonMessage) {
-		$array = json_decode ( $jsonMessage );
+		$array = json_decode ( $jsonMessage, true );
 		return $this->generateStringFromParameters ( $array ['TIMESTAMP'], $array ['TYPE'], $array ['MESSAGE'], $array ['FILE'], $array ['LINE'] );
 	}
 	
@@ -82,7 +83,7 @@ class LogHandler {
 	 * @return string
 	 */
 	private function generateJsonFromParameters($timestamp, $type, $message, $file, $line) {
-		$array = Array (
+		$array [] = Array (
 				'TIMESTAMP' => $timestamp,
 				'TYPE' => $type,
 				'MESSAGE' => $message,
@@ -100,7 +101,7 @@ class LogHandler {
 	 */
 	private function appendToFile($jsonMessage) {
 		$json = file_get_contents ( $this->getLogFile () );
-		$data = json_decode ( $json );
+		$data = json_decode ( $json, true );
 		$data [] = $jsonMessage;
 		return file_put_contents ( $this->getLogFile (), json_encode ( $data ) );
 	}
