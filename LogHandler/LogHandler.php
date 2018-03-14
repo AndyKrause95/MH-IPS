@@ -36,19 +36,7 @@ class LogHandler {
 	 */
 	public function generateStringFromParameters($timestamp, $type, $message, $file, $line) {
 		$timeFormatted = gmdate ( "Y-m-d H:i:s e", $timestamp );
-		$errorMessage = $timeFormatted . "\t-\t" . $type . "\t-\t" . $message . "\t-\t" . "in file '" . $file . "' on line '" . $line . "'.\n";
-		
-		return $errorMessage;
-	}
-	
-	/**
-	 *
-	 * @param unknown $jsonMessage
-	 * @return string
-	 */
-	public function generateStringFromJson($jsonMessage) {
-		$array = json_decode ( $jsonMessage );
-		return $this->generateStringFromParameters ( $array ['TIMESTAMP'], $array ['TYPE'], $array ['MESSAGE'], $array ['FILE'], $array ['LINE'] );
+		return $timeFormatted . "\t-\t" . $type . "\t-\t" . $message . "\t-\t" . "in file '" . $file . "' on line '" . $line . "'.\n";
 	}
 	
 	/**
@@ -61,8 +49,18 @@ class LogHandler {
 	 * @return number
 	 */
 	public function writeToLog($timestamp, $type, $message, $file, $line) {
-		$jsonMessage = $this->generateJson ( $timestamp, $type, $message, $file, $line );
+		$jsonMessage = $this->generateJsonFromParameters ( $timestamp, $type, $message, $file, $line );
 		return $this->appendToFile ( $jsonMessage );
+	}
+	
+	/**
+	 *
+	 * @param unknown $jsonMessage
+	 * @return string
+	 */
+	private function generateStringFromJson($jsonMessage) {
+		$array = json_decode ( $jsonMessage );
+		return $this->generateStringFromParameters ( $array ['TIMESTAMP'], $array ['TYPE'], $array ['MESSAGE'], $array ['FILE'], $array ['LINE'] );
 	}
 	
 	/**
@@ -74,7 +72,7 @@ class LogHandler {
 	 * @param string $line
 	 * @return string
 	 */
-	private function generateJson($timestamp, $type, $message, $file, $line) {
+	private function generateJsonFromParameters($timestamp, $type, $message, $file, $line) {
 		$array = Array (
 				'TIMESTAMP' => $timestamp,
 				'TYPE' => $type,
