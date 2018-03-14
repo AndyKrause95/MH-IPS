@@ -55,6 +55,15 @@ class LogHandler {
 	
 	/**
 	 *
+	 * @return mixed
+	 */
+	public function getLogAsArray() {
+		$json = file_get_contents ( $this->getLogFile () );
+		return json_decode ( $json );
+	}
+	
+	/**
+	 *
 	 * @param unknown $jsonMessage
 	 * @return string
 	 */
