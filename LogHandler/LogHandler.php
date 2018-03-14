@@ -8,29 +8,102 @@ namespace LogHandler;
  *        
  */
 class LogHandler {
-	private $logFilePointer;
 	private $logFilePath = "/log/";
 	private $logFileName = "MH_LOG.log";
 	
 	/**
 	 */
 	public function __construct() {
-		$this->logFilePointer = fopen ( $this->logFilePath . $this->logFileName, "a+" );
-		
-		if ($this->logFilePointer === false) {
-			echo "LogHandler: File '. $this->logFilePath . $this->logFileName .' could not be created \n";
-			return false;
-		} else {
-			return true;
+		if (! file_exists ( $this->getLogFile () )) {
+			$pointer = fopen ( $this->getLogFile (), "w" );
+			if ($pointer === false) {
+				echo "LogHandler: File '. $this->logFilePath . $this->logFileName .' could not be created \n";
+				fclose ( $pointer );
+				return false;
+			}
 		}
+		return true;
 	}
 	
 	/**
+	 *
+	 * @param int $timestamp
+	 * @param string $type
+	 * @param string $message
+	 * @param string $file
+	 * @param string $line
+	 * @return string
 	 */
-	public function writeToLog($timestamp, $severity, $file, $line, $type, $message) {
-		$timeFormatted = gmdate("Y-m-d H:i:s e", $timestamp);
-		$errorMessage = $timeFormatted . "\t-\t" . $severity . "\t-\t" . $message . "\n";
+	public function generateStringFromParameters($timestamp, $type, $message, $file, $line) {
+		$timeFormatted = gmdate ( "Y-m-d H:i:s e", $timestamp );
+		$errorMessage = $timeFormatted . "\t-\t" . $type . "\t-\t" . $message . "\t-\t" . "in file '" . $file . "' on line '" . $line . "'.\n";
+		
+		return $errorMessage;
+	}
+	
+	/**
+	 *
+	 * @param unknown $jsonMessage
+	 * @return string
+	 */
+	public function generateStringFromJson($jsonMessage) {
+		$array = json_decode ( $jsonMessage );
+		return $this->generateStringFromParameters ( $array ['TIMESTAMP'], $array ['TYPE'], $array ['MESSAGE'], $array ['FILE'], $array ['LINE'] );
+	}
+	
+	/**
+	 *
+	 * @param int $timestamp
+	 * @param string $type
+	 * @param string $message
+	 * @param string $file
+	 * @param string $line
+	 * @return number
+	 */
+	public function writeToLog($timestamp, $type, $message, $file, $line) {
+		$jsonMessage = $this->generateJson ( $timestamp, $type, $message, $file, $line );
+		return $this->appendToFile ( $jsonMessage );
+	}
+	
+	/**
+	 *
+	 * @param int $timestamp
+	 * @param string $type
+	 * @param string $message
+	 * @param string $file
+	 * @param string $line
+	 * @return string
+	 */
+	private function generateJson($timestamp, $type, $message, $file, $line) {
+		$array = Array (
+				'TIMESTAMP' => $timestamp,
+				'TYPE' => $type,
+				'MESSAGE' => $message,
+				'FILE' => $file,
+				'LINE' => $line 
+		);
+		$json = json_encode ( $array );
+		return $json;
+	}
+	
+	/**
+	 *
+	 * @param unknown $jsonMessage
+	 * @return number
+	 */
+	private function appendToFile($jsonMessage) {
+		$json = file_get_contents ( $this->getLogFile () );
+		$data = json_decode ( $json );
+		$data [] = $jsonMessage;
+		return file_put_contents ( $this->getLogFile (), json_encode ( $data ) );
+	}
+	
+	/**
+	 *
+	 * @return string
+	 */
+	private function getLogFile() {
+		return $this->logFilePath . $this->logFileName;
 	}
 }
-
 ?>
