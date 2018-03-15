@@ -114,4 +114,5 @@ class LogHandler {
 		return $this->logFilePath . $this->logFileName;
 	}
 }
+
 ?>
