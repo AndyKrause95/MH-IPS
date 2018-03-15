@@ -12,12 +12,12 @@ abstract class Relay {
 	
 	/**
 	 *
-	 * @param integer $instanceID
+	 * @param unknown $instanceID
 	 * @return boolean
 	 */
 	public function __construct($instanceID) {
 		if ($instanceID > 0) {
-			$this->instanceID = $instanceID;
+			$this->setInstanceID ( $instanceID );
 			return true;
 		} else {
 			// ERROR! Can't be greater than 0
@@ -43,7 +43,28 @@ abstract class Relay {
 	 *
 	 * @return boolean
 	 */
-	abstract public function isUsable();
+	public function isUsable() {
+		if (function_exists ( "IPS_SetDisabled" )) {
+			return IPS_GetObject ( $this->instanceID ) ['ObjectIsDisabled'];
+		} else {
+			return true;
+		}
+	}
+	
+	/**
+	 *
+	 * @param integer $instanceID
+	 */
+	public function setInstanceID($instanceID) {
+		$this->instanceID = $instanceID;
+	}
+	
+	/**
+	 *
+	 * @return integer
+	 */
+	public function getInstanceID() {
+		return $this->instanceID;
+	}
 }
-
 ?>
