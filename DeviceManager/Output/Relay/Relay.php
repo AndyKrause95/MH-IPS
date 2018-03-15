@@ -8,7 +8,17 @@ namespace DeviceManager\Output\Relay;
  *        
  */
 abstract class Relay {
+	/**
+	 *
+	 * @var integer
+	 */
 	private $instanceID;
+	
+	/**
+	 *
+	 * @var string
+	 */
+	private $parameter = "STATE";
 	
 	/**
 	 *
@@ -65,6 +75,22 @@ abstract class Relay {
 	 */
 	public function getInstanceID() {
 		return $this->instanceID;
+	}
+	
+	/**
+	 *
+	 * @param string $parameter
+	 */
+	public function setParameter($parameter) {
+		$this->parameter = $parameter;
+	}
+	
+	/**
+	 *
+	 * @return string
+	 */
+	public function getParameter() {
+		return $this->parameter;
 	}
 }
 ?>

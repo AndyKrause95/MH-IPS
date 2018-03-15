@@ -8,7 +8,6 @@ namespace DeviceManager\Output\Relay;
  *        
  */
 class Relay_LCN extends Relay {
-	private $paramter = "STATE";
 	
 	/**
 	 *
@@ -25,7 +24,7 @@ class Relay_LCN extends Relay {
 	 * @see \DeviceManager\Output\Relay\Relay::getState()
 	 */
 	public function getState() {
-		return GetValue ( IPS_GetVariableIDByIdent ( $this->paramter, $this->getInstanceID () ) );
+		return GetValue ( IPS_GetVariableIDByIdent ( $this->getParameter (), $this->getInstanceID () ) );
 	}
 	
 	/**

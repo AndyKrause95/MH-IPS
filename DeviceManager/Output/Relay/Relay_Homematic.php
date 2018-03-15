@@ -8,7 +8,6 @@ namespace DeviceManager\Output\Relay;
  *        
  */
 class Relay_Homematic extends Relay {
-	private $parameter;
 	
 	/**
 	 *
@@ -16,7 +15,7 @@ class Relay_Homematic extends Relay {
 	 * @param string $parameter
 	 * @return boolean
 	 */
-	public function __construct($instanceID, $parameter = "STATE") {
+	public function __construct($instanceID) {
 		$this->parameter = $parameter;
 		return parent::__construct ( $instanceID );
 	}
@@ -27,7 +26,7 @@ class Relay_Homematic extends Relay {
 	 * @see \DeviceManager\Output\Relay\Relay::getState()
 	 */
 	public function getState() {
-		return GetValue ( IPS_GetVariableIDByIdent ( $this->parameter, $this->getInstanceID () ) );
+		return GetValue ( IPS_GetVariableIDByIdent ( $this->getParameter (), $this->getInstanceID () ) );
 	}
 	
 	/**
@@ -37,7 +36,7 @@ class Relay_Homematic extends Relay {
 	 */
 	public function setState($state) {
 		if ($this->isUsable ()) {
-			return HM_WriteValueBoolean ( $this->getInstanceID (), $this->parameter, $state );
+			return HM_WriteValueBoolean ( $this->getInstanceID (), $this->getParameter (), $state );
 		} else {
 			// Not Usable
 			// TODO: Implement Exception
