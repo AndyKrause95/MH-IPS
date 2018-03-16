@@ -24,7 +24,7 @@ class Relay_LCN extends Relay {
 	 * @see \DeviceManager\Output\Relay\Relay::getState()
 	 */
 	public function getState() {
-		return GetValue ( IPS_GetVariableIDByIdent ( $this->parameter, $this->instanceID ) );
+		return GetValueBoolean ( IPS_GetObjectIDByIdent ( $this->parameter, $this->instanceID ) );
 	}
 	
 	/**
@@ -37,3 +37,4 @@ class Relay_LCN extends Relay {
 	}
 }
 
+?>
