@@ -33,7 +33,7 @@ abstract class Relay {
 			return true;
 		} else {
 			// ERROR! Must be greater than 0
-			// TODO: Implement Exception.
+			// TODO - Implement Exception.
 			return false;
 		}
 	}
@@ -48,7 +48,7 @@ abstract class Relay {
 			return $this->setState ( $state );
 		} else {
 			// Not Usable because locked via IPS_SetDisabled
-			// TODO: Implement Exception
+			// TODO - Implement Exception
 		}
 	}
 	
