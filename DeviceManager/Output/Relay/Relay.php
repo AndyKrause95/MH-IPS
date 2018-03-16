@@ -9,12 +9,14 @@ namespace DeviceManager\Output\Relay;
  */
 abstract class Relay {
 	/**
+	 * InstanceID of Device within IP-Symcon
 	 *
 	 * @var integer
 	 */
 	protected $instanceID;
 	
 	/**
+	 * Variable-Ident of Parameter to switch
 	 *
 	 * @var string
 	 */
@@ -37,11 +39,12 @@ abstract class Relay {
 	}
 	
 	/**
+	 * Set state of Device
 	 *
 	 * @param boolean $state
 	 */
 	public function setState($state) {
-		if ($this->isUsable ()) {
+		if (! $this->isDisabled ()) {
 			return $this->setState ( $state );
 		} else {
 			// Not Usable because locked via IPS_SetDisabled
@@ -50,18 +53,20 @@ abstract class Relay {
 	}
 	
 	/**
+	 * Check if Device is disabled
 	 *
 	 * @return boolean
 	 */
-	public function isUsable() {
+	public function isDisabled() {
 		if (function_exists ( "IPS_SetDisabled" )) { // Only available IPS >= 4.0
 			return IPS_GetObject ( $this->instanceID ) ['ObjectIsDisabled'];
 		} else {
-			return true;
+			return false;
 		}
 	}
 	
 	/**
+	 * Set state of actual hardware Device
 	 *
 	 * @param boolean $state
 	 * @return boolean
@@ -69,6 +74,7 @@ abstract class Relay {
 	abstract protected function setStateHardware($state);
 	
 	/**
+	 * Get state of actual hardware
 	 *
 	 * @return boolean
 	 */
