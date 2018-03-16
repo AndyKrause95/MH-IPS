@@ -48,7 +48,7 @@ class LogHandler {
 	 */
 	public function writeToLog($timestamp, $type, $message, $file, $line) {
 		$logFileHandler = new LogFileHandler ();
-		return $logFileHandler->writeToLogFromParameters ( $timestamp, $type, $message, $file, $line );
+		return $logFileHandler->writeToLog ( $timestamp, $type, $message, $file, $line );
 	}
 }
 

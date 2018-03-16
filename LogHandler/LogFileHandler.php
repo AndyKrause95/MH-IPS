@@ -30,7 +30,7 @@ class LogFileHandler {
 	 *
 	 * @return mixed
 	 */
-	public function getLogAsArray() {
+	public function getLog() {
 		$json = file_get_contents ( $this->getLogFile () );
 		return json_decode ( $json, true );
 	}
@@ -43,7 +43,7 @@ class LogFileHandler {
 	 * @param string $file
 	 * @param string $line
 	 */
-	public function writeToLogFromParameters($timestamp, $type, $message, $file, $line) {
+	public function writeToLog($timestamp, $type, $message, $file, $line) {
 		$jsonMessage = $this->generateJsonFromParameters ( $timestamp, $type, $message, $file, $line );
 		$this->appendToFile ( $jsonMessage );
 	}
@@ -58,16 +58,6 @@ class LogFileHandler {
 		$data = json_decode ( $json, true );
 		$data [] = $jsonMessage;
 		return file_put_contents ( $this->getLogFile (), json_encode ( $data ) );
-	}
-	
-	/**
-	 *
-	 * @param unknown $jsonMessage
-	 * @return string
-	 */
-	private function generateStringFromJson($jsonMessage) {
-		$array = json_decode ( $jsonMessage, true );
-		return $this->generateStringFromParameters ( $array ['TIMESTAMP'], $array ['TYPE'], $array ['MESSAGE'], $array ['FILE'], $array ['LINE'] );
 	}
 	
 	/**
