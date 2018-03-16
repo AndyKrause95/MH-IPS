@@ -44,7 +44,7 @@ abstract class Relay {
 		if ($this->isUsable ()) {
 			return $this->setState ( $state );
 		} else {
-			// Not Usable
+			// Not Usable because locked via IPS_SetDisabled
 			// TODO: Implement Exception
 		}
 	}
