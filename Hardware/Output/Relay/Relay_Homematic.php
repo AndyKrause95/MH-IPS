@@ -34,7 +34,7 @@ class Relay_Homematic extends Relay {
 	 * @see \DeviceManager\Output\Relay\Relay::setState()
 	 */
 	protected function setStateHardware($state) {
-		return HM_WriteValueBoolean ( $this->instanceID (), $this->parameter, $state );
+		return HM_WriteValueBoolean ( $this->instanceID, $this->parameter, $state );
 	}
 }
 
