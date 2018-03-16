@@ -24,7 +24,7 @@ class Relay_LCN extends Relay {
 	 * @see \DeviceManager\Output\Relay\Relay::getState()
 	 */
 	public function getState() {
-		return GetValue ( IPS_GetVariableIDByIdent ( $this->getParameter (), $this->getInstanceID () ) );
+		return GetValue ( IPS_GetVariableIDByIdent ( $this->parameter, $this->instanceID ) );
 	}
 	
 	/**
@@ -32,13 +32,8 @@ class Relay_LCN extends Relay {
 	 * {@inheritdoc}
 	 * @see \DeviceManager\Output\Relay\Relay::setState()
 	 */
-	public function setState($state) {
-		if ($this->isUsable ()) {
-			return LCN_SwitchRelay ( $this->getInstanceID (), $state );
-		} else {
-			// Not Usable
-			// TODO: Implement Exception
-		}
+	protected function setStateHardware($state) {
+		return LCN_SwitchRelay ( $this->instanceID, $state );
 	}
 }
 

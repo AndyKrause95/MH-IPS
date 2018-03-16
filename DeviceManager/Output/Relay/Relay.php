@@ -12,17 +12,17 @@ abstract class Relay {
 	 *
 	 * @var integer
 	 */
-	private $instanceID;
+	protected $instanceID;
 	
 	/**
 	 *
 	 * @var string
 	 */
-	private $parameter = "STATE";
+	protected $parameter = "STATE";
 	
 	/**
 	 *
-	 * @param unknown $instanceID
+	 * @param integer $instanceID
 	 * @return boolean
 	 */
 	public function __construct($instanceID) {
@@ -30,7 +30,7 @@ abstract class Relay {
 			$this->setInstanceID ( $instanceID );
 			return true;
 		} else {
-			// ERROR! Can't be greater than 0
+			// ERROR! Must be greater than 0
 			// TODO: Implement Exception.
 			return false;
 		}
@@ -39,22 +39,22 @@ abstract class Relay {
 	/**
 	 *
 	 * @param boolean $state
-	 * @return boolean
 	 */
-	abstract public function setState($state);
-	
-	/**
-	 *
-	 * @return boolean
-	 */
-	abstract public function getState();
+	public function setState($state) {
+		if ($this->isUsable ()) {
+			return $this->setState ( $state );
+		} else {
+			// Not Usable
+			// TODO: Implement Exception
+		}
+	}
 	
 	/**
 	 *
 	 * @return boolean
 	 */
 	public function isUsable() {
-		if (function_exists ( "IPS_SetDisabled" )) {
+		if (function_exists ( "IPS_SetDisabled" )) { // Only available IPS >= 4.0
 			return IPS_GetObject ( $this->instanceID ) ['ObjectIsDisabled'];
 		} else {
 			return true;
@@ -63,34 +63,15 @@ abstract class Relay {
 	
 	/**
 	 *
-	 * @param integer $instanceID
+	 * @param boolean $state
+	 * @return boolean
 	 */
-	public function setInstanceID($instanceID) {
-		$this->instanceID = $instanceID;
-	}
+	abstract protected function setStateHardware($state);
 	
 	/**
 	 *
-	 * @return integer
+	 * @return boolean
 	 */
-	public function getInstanceID() {
-		return $this->instanceID;
-	}
-	
-	/**
-	 *
-	 * @param string $parameter
-	 */
-	public function setParameter($parameter) {
-		$this->parameter = $parameter;
-	}
-	
-	/**
-	 *
-	 * @return string
-	 */
-	public function getParameter() {
-		return $this->parameter;
-	}
+	abstract public function getState();
 }
 ?>
