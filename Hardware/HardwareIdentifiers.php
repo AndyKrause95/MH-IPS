@@ -11,7 +11,7 @@ class HardwareIdentifiers {
 	
 	/**
 	 * Array containing GUIDs and names of hardware devices.
-	 * 
+	 *
 	 * @var array
 	 */
 	const GUID_ARRAY = Array (
