@@ -30,11 +30,9 @@ abstract class Relay {
 	public function __construct($instanceID) {
 		if ($instanceID > 0) {
 			$this->setInstanceID ( $instanceID );
-			return true;
 		} else {
 			// ERROR! Must be greater than 0
-			// TODO - Implement Exception.
-			return false;
+			// TODO - Exception.
 		}
 	}
 	
@@ -48,7 +46,7 @@ abstract class Relay {
 			return $this->setState ( $state );
 		} else {
 			// Not Usable because locked via IPS_SetDisabled
-			// TODO - Implement Exception
+			// TODO - Exception
 		}
 	}
 	

@@ -16,7 +16,8 @@ class Relay_Homematic extends Relay {
 	 * @return boolean
 	 */
 	public function __construct($instanceID) {
-		return parent::__construct ( $instanceID );
+		parent::__construct ( $instanceID );
+		// TODO - Does this work?
 	}
 	
 	/**

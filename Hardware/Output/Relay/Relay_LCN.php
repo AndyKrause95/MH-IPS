@@ -15,7 +15,8 @@ class Relay_LCN extends Relay {
 	 * @return boolean
 	 */
 	public function __construct($instanceID) {
-		return parent::__construct ( $instanceID );
+		parent::__construct ( $instanceID );
+		// TODO - Does this work?
 	}
 	
 	/**

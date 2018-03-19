@@ -10,7 +10,7 @@ namespace LogHandler;
 class LogFileHandler {
 	private $logFilePath = "/log/";
 	private $logFileName = "MH_LOG.log";
-	private $maxSize = 0; /* TODO - Implement max size for log file */
+	private $maxSize = 0; // TODO - Max size for log file
 	
 	/**
 	 */
@@ -20,10 +20,9 @@ class LogFileHandler {
 			if ($pointer === false) {
 				echo "LogFileHandler: File '. $this->logFilePath . $this->logFileName .' could not be created \n";
 				fclose ( $pointer );
-				return false;
+				// TODO - Exception
 			}
 		}
-		return true;
 	}
 	
 	/**

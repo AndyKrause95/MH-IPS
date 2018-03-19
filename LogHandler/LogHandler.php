@@ -36,7 +36,7 @@ class LogHandler {
 	 * @param integer $level
 	 */
 	public function logMessage($message, $level) {
-		// TODO - Implement Logging to file and display
+		// TODO - Logging to file and display
 		if ($level == $this->logLevelActive) {
 		} else {
 		}
