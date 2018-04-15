@@ -4,7 +4,7 @@ namespace Hardware;
 
 /**
  *
- * @author Andy
+ * @author AndyKrause
  *        
  */
 class HardwareIdentifiers {

@@ -16,7 +16,7 @@ class LogVisualization {
 	
 	/**
 	 *
-	 * @param unknown $json
+	 * @param String $json
 	 */
 	public function createHtmlFromJson($json) {
 		$array = json_decode ( $json, true );

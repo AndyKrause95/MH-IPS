@@ -3,53 +3,57 @@
 namespace Hardware\Output;
 
 use Hardware\HardwareIdentifiers;
+use Abstraction\SymconMisc\SymconObjects;
 
 /**
  *
- * @author Andy
+ * @author AndyKrause
  *        
  */
 class OutputFactory {
-	const PREFIX_RELAY = "Relay";
-	const PREFIX_DIMMER = "Dimmer";
-	const PREFIX_SHUTTER = "Shutter";
 	
 	/**
 	 *
+	 * @param string $prefix
 	 * @param string $guid
 	 * @return boolean
 	 */
-	public static function createRelay($guid) {
-		$hardwareName = HardwareIdentifiers::getNameByGuid ( $guid );
-		if (! $hardwareName) {
-			return false;
-			// GUID not found
-			// TODO - Exception
+	public static function createClass($prefix, $instance_id) {
+		$guid = SymconObjects::getInstanceGuid ( $instance_id );
+		if ($guid !== false) {
+			$hardware_name = HardwareIdentifiers::getNameByGuid ( $guid );
+			if ($hardware_name !== false) {
+				return self::newClass ( $prefix, $hardware_name );
+			} else {
+				return false;
+				// GUID not found
+				// TODO - Exception
+			}
 		}
-		return self::createClass ( self::PREFIX_RELAY, $hardwarename );
 	}
 	
 	/**
 	 *
 	 * @param string $prefix
-	 * @param string $hardwarename
+	 * @param string $hardware_name
 	 * @return boolean
 	 */
-	private static function createClass($prefix, $hardwarename) {
-		$className = self::PREFIX_RELAY . "_" . $hardwareName;
-		if (! file_exists ( "Relay/" . $className . ".php" )) {
+	private static function newClass($prefix, $hardware_name) {
+		$class_name = $prefix . "_" . $hardware_name;
+		if (file_exists ( $prefix . "/" . $class_name . ".php" )) {
+			require_once $prefix . '/' . $class_name;
+			if (class_exists ( $class_name )) {
+				// Class found, instatiate
+				return new $class_name ();
+			} else {
+				// Class not found
+				// TODO - Exception
+				return false;
+			}
+		} else {
 			return false;
 			// File not found
 			// TODO - Exception
-		}
-		
-		require_once 'Relay/' . $className;
-		if (class_exists ( $className )) {
-			return new $className ();
-		} else {
-			// Class not found
-			// TODO - Exception
-			return false;
 		}
 	}
 }

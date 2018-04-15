@@ -49,7 +49,7 @@ class LogFileHandler {
 	
 	/**
 	 *
-	 * @param unknown $jsonMessage
+	 * @param String $jsonMessage
 	 * @return number
 	 */
 	private function appendToFile($jsonMessage) {

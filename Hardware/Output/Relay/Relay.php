@@ -2,80 +2,85 @@
 
 namespace DeviceManager\Output\Relay;
 
+use Hardware\Output\OutputFactory;
+
 /**
  *
- * @author Andy
+ * @author AndyKrause
  *        
  */
 abstract class Relay {
+	/**
+	 * Prefix for class naming
+	 *
+	 * @var string
+	 */
+	const PREFIX = "Relay";
+	
 	/**
 	 * InstanceID of Device within IP-Symcon
 	 *
 	 * @var integer
 	 */
-	protected $instanceID;
+	protected $instanceId;
 	
 	/**
 	 * Variable-Ident of Parameter to switch
 	 *
 	 * @var string
 	 */
-	protected $parameter = "STATE";
+	protected $parameterName = "STATE";
 	
 	/**
-	 *
-	 * @param integer $instanceID
-	 * @return boolean
 	 */
-	public function __construct($instanceID) {
-		if ($instanceID > 0) {
-			$this->setInstanceID ( $instanceID );
-		} else {
-			// ERROR! Must be greater than 0
-			// TODO - Exception.
-		}
+	public function __construct() {
 	}
 	
 	/**
-	 * Set state of Device
+	 * Sets ObjectIsDisabled flag.
 	 *
-	 * @param boolean $state
+	 * @param boolean $disabled
 	 */
-	public function setState($state) {
-		if (! $this->isDisabled ()) {
-			return $this->setState ( $state );
-		} else {
-			// Not Usable because locked via IPS_SetDisabled
-			// TODO - Exception
-		}
+	public function setDisabled($disabled) {
+		IPS_SetDisabled ( $this->instanceId, $disabled );
 	}
 	
 	/**
-	 * Check if Device is disabled
+	 * Returns ObjectIsDisabled flag.
 	 *
 	 * @return boolean
 	 */
 	public function isDisabled() {
 		if (function_exists ( "IPS_SetDisabled" )) { // Only available IPS >= 4.0
-			return IPS_GetObject ( $this->instanceID ) ['ObjectIsDisabled'];
+			return IPS_GetObject ( $this->instanceId ) ['ObjectIsDisabled'];
 		} else {
 			return false;
 		}
 	}
 	
 	/**
-	 * Set state of actual hardware Device
+	 * Set state of hardware.
 	 *
 	 * @param boolean $state
 	 * @return boolean
 	 */
-	abstract protected function setStateHardware($state);
+	abstract public function setState($state);
 	
 	/**
-	 * Get state of actual hardware
+	 * Get state of hardware.
 	 *
 	 * @return boolean
 	 */
 	abstract public function getState();
+	
+	/**
+	 * Return class to control hardware.
+	 *
+	 * @param integer $instance_Id
+	 * @return boolean
+	 */
+	public static function createClass($instance_id) {
+		return OutputFactory::createClass ( self::PREFIX, $instance_id );
+	}
 }
 ?>

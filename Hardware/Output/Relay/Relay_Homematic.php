@@ -4,20 +4,30 @@ namespace DeviceManager\Output\Relay;
 
 /**
  *
- * @author Andy
+ * @author AndyKrause
  *        
  */
 class Relay_Homematic extends Relay {
+	const GUID = "{EE4A81C6-5C90-4DB7-AD2F-F6BBD521412E}";
 	
 	/**
 	 *
 	 * @param integer $instanceID
-	 * @param string $parameter
 	 * @return boolean
 	 */
-	public function __construct($instanceID) {
-		parent::__construct ( $instanceID );
-		// TODO - Does this work?
+	public function __construct($instance_Id) {
+		$this->instanceId = $instance_Id;
+	}
+	
+	/**
+	 *
+	 * {@inheritdoc}
+	 * @see \DeviceManager\Output\Relay\Relay::setState()
+	 */
+	public function setState($state) {
+		if (! $this->isDisabled ()) {
+			return HM_WriteValueBoolean ( $this->instanceId, $this->parameterName, $state );
+		}
 	}
 	
 	/**
@@ -26,16 +36,7 @@ class Relay_Homematic extends Relay {
 	 * @see \DeviceManager\Output\Relay\Relay::getState()
 	 */
 	public function getState() {
-		return GetValueBoolean ( IPS_GetObjectIDByIdent ( $this->parameter, $this->instanceID ) );
-	}
-	
-	/**
-	 *
-	 * {@inheritdoc}
-	 * @see \DeviceManager\Output\Relay\Relay::setState()
-	 */
-	protected function setStateHardware($state) {
-		return HM_WriteValueBoolean ( $this->instanceID, $this->parameter, $state );
+		return GetValueBoolean ( IPS_GetObjectIDByIdent ( $this->parameterName, $this->instanceId ) );
 	}
 }
 

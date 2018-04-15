@@ -4,19 +4,30 @@ namespace DeviceManager\Output\Relay;
 
 /**
  *
- * @author Andy
+ * @author AndyKrause
  *        
  */
 class Relay_LCN extends Relay {
+	const GUID = "{2D871359-14D8-493F-9B01-26432E3A710F}";
 	
 	/**
 	 *
 	 * @param integer $instanceID
 	 * @return boolean
 	 */
-	public function __construct($instanceID) {
-		parent::__construct ( $instanceID );
-		// TODO - Does this work?
+	public function __construct($instance_Id) {
+		$this->instanceId = $instance_Id;
+	}
+	
+	/**
+	 *
+	 * {@inheritdoc}
+	 * @see \DeviceManager\Output\Relay\Relay::setState()
+	 */
+	public function setState($state) {
+		if (! $this->isDisabled ()) {
+			return LCN_SwitchRelay ( $this->instanceId, $state );
+		}
 	}
 	
 	/**
@@ -25,16 +36,7 @@ class Relay_LCN extends Relay {
 	 * @see \DeviceManager\Output\Relay\Relay::getState()
 	 */
 	public function getState() {
-		return GetValueBoolean ( IPS_GetObjectIDByIdent ( $this->parameter, $this->instanceID ) );
-	}
-	
-	/**
-	 *
-	 * {@inheritdoc}
-	 * @see \DeviceManager\Output\Relay\Relay::setState()
-	 */
-	protected function setStateHardware($state) {
-		return LCN_SwitchRelay ( $this->instanceID, $state );
+		return GetValueBoolean ( IPS_GetObjectIDByIdent ( $this->parameterName, $this->instanceId ) );
 	}
 }
 
