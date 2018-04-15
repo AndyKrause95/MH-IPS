@@ -26,7 +26,7 @@ class Relay_Homematic extends Relay {
 	 */
 	public function setState($state) {
 		if (! $this->isDisabled ()) {
-			return HM_WriteValueBoolean ( $this->instanceId, $this->parameterName, $state );
+			return HM_WriteValueBoolean ( $this->instanceId, $this->parameterIdent, $state );
 		}
 	}
 	
@@ -36,7 +36,7 @@ class Relay_Homematic extends Relay {
 	 * @see \DeviceManager\Output\Relay\Relay::getState()
 	 */
 	public function getState() {
-		return GetValueBoolean ( IPS_GetObjectIDByIdent ( $this->parameterName, $this->instanceId ) );
+		return GetValueBoolean ( IPS_GetObjectIDByIdent ( $this->parameterIdent, $this->instanceId ) );
 	}
 }
 

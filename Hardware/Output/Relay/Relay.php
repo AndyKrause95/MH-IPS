@@ -3,13 +3,14 @@
 namespace DeviceManager\Output\Relay;
 
 use Hardware\Output\OutputFactory;
+use Hardware\Output\Relay\RelayInterface;
 
 /**
  *
  * @author AndyKrause
  *        
  */
-abstract class Relay {
+abstract class Relay implements RelayInterface {
 	/**
 	 * Prefix for class naming
 	 *
@@ -29,20 +30,20 @@ abstract class Relay {
 	 *
 	 * @var string
 	 */
-	protected $parameterName = "STATE";
-	
-	/**
-	 */
-	public function __construct() {
-	}
+	protected $parameterIdent = "STATE";
 	
 	/**
 	 * Sets ObjectIsDisabled flag.
 	 *
-	 * @param boolean $disabled
+	 * @return boolean
 	 */
 	public function setDisabled($disabled) {
-		IPS_SetDisabled ( $this->instanceId, $disabled );
+		if (function_exists ( "IPS_SetDisabled" )) { // Only available IPS >= 4.0
+			return IPS_SetDisabled ( $this->instanceId, $disabled );
+		} else {
+			// Function does not exist.
+			return false;
+		}
 	}
 	
 	/**
@@ -54,24 +55,28 @@ abstract class Relay {
 		if (function_exists ( "IPS_SetDisabled" )) { // Only available IPS >= 4.0
 			return IPS_GetObject ( $this->instanceId ) ['ObjectIsDisabled'];
 		} else {
+			// Function does not exist.
 			return false;
 		}
 	}
 	
 	/**
-	 * Set state of hardware.
+	 * Returns InstanceID of module.
 	 *
-	 * @param boolean $state
-	 * @return boolean
+	 * @return integer
 	 */
-	abstract public function setState($state);
+	public function getInstanceId() {
+		return $this->instanceId;
+	}
 	
 	/**
-	 * Get state of hardware.
+	 * Return parameter ident of variable to switch.
 	 *
-	 * @return boolean
+	 * @return string
 	 */
-	abstract public function getState();
+	public function getParameterIdent() {
+		return $this->parameterIdent;
+	}
 	
 	/**
 	 * Return class to control hardware.

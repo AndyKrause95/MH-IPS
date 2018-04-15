@@ -33,4 +33,3 @@ interface RelayInterface {
 	 */
 	public function isDisabled();
 }
-
