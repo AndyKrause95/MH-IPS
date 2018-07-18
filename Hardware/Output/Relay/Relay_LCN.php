@@ -1,6 +1,8 @@
 <?php
 
-namespace DeviceManager\Output\Relay;
+namespace Hardware\Output\Relay;
+
+require_once ('\Relay.php');
 
 /**
  *
@@ -22,7 +24,7 @@ class Relay_LCN extends Relay {
 	/**
 	 *
 	 * {@inheritdoc}
-	 * @see \DeviceManager\Output\Relay\Relay::setState()
+	 * @see \Hardware\Output\Relay\Relay::setState()
 	 */
 	public function setState($state) {
 		if (! $this->isDisabled ()) {
@@ -33,7 +35,7 @@ class Relay_LCN extends Relay {
 	/**
 	 *
 	 * {@inheritdoc}
-	 * @see \DeviceManager\Output\Relay\Relay::getState()
+	 * @see \Hardware\Output\Relay\Relay::getState()
 	 */
 	public function getState() {
 		return GetValueBoolean ( IPS_GetObjectIDByIdent ( $this->parameterIdent, $this->instanceId ) );

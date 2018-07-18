@@ -2,6 +2,9 @@
 
 namespace Hardware\Output;
 
+require_once (__DIR__ . '\Abstraction\SymconMisc\SymconObjects.php');
+require_once ('\HardwareIdentifiers');
+
 use Hardware\HardwareIdentifiers;
 use Abstraction\SymconMisc\SymconObjects;
 
@@ -40,6 +43,7 @@ class OutputFactory {
 	 */
 	private static function newClass($prefix, $hardware_name) {
 		$class_name = $prefix . "_" . $hardware_name;
+		// FIXME file_exists and require must consider path from IPS_GetKernelDir !
 		if (file_exists ( $prefix . "/" . $class_name . ".php" )) {
 			require_once $prefix . '/' . $class_name;
 			if (class_exists ( $class_name )) {

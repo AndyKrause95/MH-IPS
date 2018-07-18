@@ -1,9 +1,10 @@
 <?php
 
-namespace DeviceManager\Output\Relay;
+namespace Hardware\Output\Relay;
+
+require_once ('\RelayInterface.php');
 
 use Hardware\Output\OutputFactory;
-use Hardware\Output\Relay\RelayInterface;
 
 /**
  *
@@ -11,6 +12,7 @@ use Hardware\Output\Relay\RelayInterface;
  *        
  */
 abstract class Relay implements RelayInterface {
+	
 	/**
 	 * Prefix for class naming
 	 *

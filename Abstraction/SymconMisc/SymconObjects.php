@@ -8,6 +8,7 @@ namespace Abstraction\SymconMisc;
  *        
  */
 class SymconObjects {
+	
 	// TODO - Insert your code here
 	
 	/**
@@ -27,7 +28,7 @@ class SymconObjects {
 	public static function getInstanceGuid($instance_Id) {
 		$instance = IPS_GetInstance ( $instance_Id );
 		if (array_key_exists ( 'ModuleID', $instance ['ModuleInfo'] )) {
-			return $module ['ModuleID'];
+			return $instance ['ModuleInfo'] ['ModuleID'];
 		} else {
 			// TODO - Exception
 			return false;
