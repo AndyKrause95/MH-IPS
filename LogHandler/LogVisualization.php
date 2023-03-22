@@ -4,7 +4,7 @@ namespace LogHandler;
 
 /**
  *
- * @author Andy
+ * @author AndyKrause
  *        
  */
 class LogVisualization {
